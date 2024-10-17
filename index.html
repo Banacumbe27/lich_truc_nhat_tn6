@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trực nhật TN6</title>
+    <style>
+        @keyframes fade-in{
+            0%{
+        
+                scale:0 ;
+            }
+            100%{
+              
+                scale:1;
+
+            }
+        }
+        body {
+            overflow:hidden;
+            font-family: Arial, sans-serif;
+            background:url(backgroundfortn6.jpg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1, h2 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        h1 {
+            font-size: 4vmax;
+            color:white;
+        }
+        h2 {
+            font-size: 5vmax;
+            color: red;
+        }
+        #credit{
+            font-size:2.5vmax;
+            font-weight: bold;
+        }
+        .container{
+            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px);
+            width:fit-content;
+            height:fit-content;
+            animation:1s ease fade-in;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+<h1 style="position:inline;top:0; font-size:4vmax">-Lịch trực nhật 12TN6-</h1>
+<h1></h1>
+<h2 id="dutyStudents">Loading...</h2>
+<p id="credit">"Chúc các bạn trực nhật nghiêm túc và đầy đủ, vui vẻ, không quạu😀" <a href="https://www.facebook.com/mimic.jacson.5" target="_blank">Made by Duy Nguyen <3</a></p>
+    </div>
+<script>
+    const dayOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
+    const all_dayOfWeek=["Chủ Nhật","Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu","Thứ bảy"];
+    const studentPairs = [
+    ["Bùi Phát Đạt", "Nguyễn Thanh Hà"],
+    ["Huỳnh Nguyễn Gia Hân", "Đinh Nguyễn Trung Hiếu"],
+    ["Vũ Huy Hoàng", "Hồ Bảo Hưng"],
+    ["Nguyễn Thị Nhật Khanh", "Trần Ngọc Mai Khuê"],
+    ["Vũ Trọng Khôi", "Ngô Huỳnh Nhật Lam"],
+    ["Nguyễn Thiện Như Lê", "Ngô Kiệt Luân"],
+    ["Vũ Lê Xuân Mai", "Võ Thái Duy Mỹ"],
+    ["Nguyễn Lê Hồng Ngọc", "Võ Khánh Ngọc"],
+    ["Đoàn Nguyên Nhi", "Hà Minh Ngọc Nhi"],
+    ["Nguyễn Thị Cẩm Nhung", "Huỳnh Hoàng Như"],
+    ["Hồ Như Phi", "Đinh Ngọc Hoàng Phúc"],
+    ["Lê Tùng Phúc", "Trần Minh Nghĩa"],
+    ["Hoàng Bích Phương", "Nguyễn Lê Trúc Thanh"],
+    ["Nguyễn Yên Thanh", "Cao Nguyễn Bảo Trân"],
+    ["Hồ Minh Trí", "Ngô Hồ Thanh Trúc"],
+    ["Nguyễn Quốc Tuấn", "Nguyễn Trường Uyên"],
+    ["Nguyễn Quang Vinh", "Ngô Phúc An"],
+    ["Vũ Hoàng Bách", "Trần Thái Dương"]
+];
+
+
+    let startDate = new Date("2024-10-17");
+    let endDate = new Date("2025-06-30");
+    let currentDate = new Date(); 
+    let schedule = [];
+
+    // Special case for September 13, 2024
+    let specialDate = new Date("2024-09-13");
+
+    let tempDate = new Date(startDate);
+    document.querySelectorAll('h1')[1].textContent=`${all_dayOfWeek[currentDate.getDay()]},${currentDate.getDate()}/${currentDate.getMonth()+1}/${currentDate.getFullYear()}`;
+    while (tempDate <= endDate) {
+        if (tempDate.getDay() >= 1 && tempDate.getDay() <= 5) {  // Monday to Friday
+            let pair = studentPairs.shift();
+            schedule.push({
+                date: new Date(tempDate),
+                pair: pair
+            });
+            studentPairs.push(pair);  // Re-append pair to end of list
+        }
+        tempDate.setDate(tempDate.getDate() + 1);
+    }
+
+    // Function to check if two dates are the same (ignoring time)
+    function sameDay(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+               d1.getMonth() === d2.getMonth() &&
+               d1.getDate() === d2.getDate();
+    }
+
+    let todayPair = null;
+    let isWeekend = currentDate.getDay() === 6 || currentDate.getDay() === 0;  // 6 = Saturday, 0 = Sunday
+
+    let dutyStudentsElement = document.getElementById("dutyStudents");
+    if (sameDay(currentDate, specialDate)) {
+        dutyStudentsElement.innerText = "!Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9!";
+    } else if (isWeekend) {
+        dutyStudentsElement.innerText = "Chúc bạn cuối tuần vui vẻ.";
+    } else {
+        // Loop through the schedule to find today's pair
+        for (let entry of schedule) {
+            if (sameDay(entry.date, currentDate)) {
+                todayPair = entry.pair;
+                break;
+            }
+        }
+
+        // Update the webpage with today's cleaning duty students or a default message
+        if (todayPair) {
+            dutyStudentsElement.innerText = `Hôm nay ${todayPair[0]} và ${todayPair[1]} trực nhật.`;
+        } else {
+            dutyStudentsElement.innerText = "!Không có người trực hôm nay!";
+        }
+    }
+</script>
+
+</body>
+</html>
